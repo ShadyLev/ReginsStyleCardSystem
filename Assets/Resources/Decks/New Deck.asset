@@ -13,31 +13,31 @@ MonoBehaviour:
   m_Name: New Deck
   m_EditorClassIdentifier: 
   NodeLinks:
-  - BaseNodeGuid: 496fad09-3b37-4b84-a07e-b8aca2e5ef35
+  - BaseNodeGuid: 25017380-dd41-4589-a54f-4835311f2a18
     PortName: Output
-    TargetNodeGuid: 7a203f47-0c89-4912-bd52-5a23cde03430
-  - BaseNodeGuid: 7a203f47-0c89-4912-bd52-5a23cde03430
+    TargetNodeGuid: 445bbb95-eeb1-4376-8585-210262c9bc5e
+  - BaseNodeGuid: 445bbb95-eeb1-4376-8585-210262c9bc5e
     PortName: Left
-    TargetNodeGuid: e1ff1e0d-8dde-4b07-8184-86c04db93034
-  - BaseNodeGuid: 7a203f47-0c89-4912-bd52-5a23cde03430
+    TargetNodeGuid: c122b744-8f38-4310-840e-0f59a9cb9342
+  - BaseNodeGuid: 445bbb95-eeb1-4376-8585-210262c9bc5e
     PortName: Right
-    TargetNodeGuid: 51dc87c6-9a6b-4a7d-bd54-95846d1c8ce2
+    TargetNodeGuid: 915a0494-7a05-46c9-acab-b2f8225aecc9
   DeckNodeDatas:
-  - Guid: e1ff1e0d-8dde-4b07-8184-86c04db93034
-    characterSO: {fileID: 0}
-    DialogueText: sdad
-    LeftAnswer: asdasdasd
-    RightAnswer: sdasd
-    Position: {x: -133, y: 642}
-  - Guid: 51dc87c6-9a6b-4a7d-bd54-95846d1c8ce2
-    characterSO: {fileID: 0}
-    DialogueText: sads
-    LeftAnswer: Left Answer
-    RightAnswer: d
-    Position: {x: 269, y: 642}
-  - Guid: 7a203f47-0c89-4912-bd52-5a23cde03430
+  - Guid: 445bbb95-eeb1-4376-8585-210262c9bc5e
     characterSO: {fileID: 11400000, guid: 8a0949db2eede3c42a66b11f3861421e, type: 2}
     DialogueText: Dialogue Text
     LeftAnswer: Left Answer
     RightAnswer: Right Answer
-    Position: {x: 28, y: 315}
+    Position: {x: 52, y: 277}
+  - Guid: c122b744-8f38-4310-840e-0f59a9cb9342
+    characterSO: {fileID: 11400000, guid: 8a0949db2eede3c42a66b11f3861421e, type: 2}
+    DialogueText: You chose left
+    LeftAnswer: 1
+    RightAnswer: 2
+    Position: {x: -109, y: 577}
+  - Guid: 915a0494-7a05-46c9-acab-b2f8225aecc9
+    characterSO: {fileID: 11400000, guid: 8a0949db2eede3c42a66b11f3861421e, type: 2}
+    DialogueText: You chose right
+    LeftAnswer: 3
+    RightAnswer: 4
+    Position: {x: 176, y: 577}
