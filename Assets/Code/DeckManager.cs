@@ -7,6 +7,7 @@ using UnityEngine.UI;
 
 public class DeckManager : MonoBehaviour
 {
+    public PlayerManager playerManager;
     public DeckContainer deck;
     private int _deckNodeIndex;
     private DeckNodeData _currentNode;
@@ -21,6 +22,7 @@ public class DeckManager : MonoBehaviour
     void Start()
     {
         _deckNodeIndex = 0;
+        _currentNode = deck.DeckNodeDatas[0];
         SetNewCard(deck.DeckNodeDatas[0]);
     }
 
@@ -59,6 +61,10 @@ public class DeckManager : MonoBehaviour
             linkedNode = connections[0];
         else
             linkedNode = connections[1];
+
+        var modifierToApply = left ? _currentNode.leftModifier : _currentNode.rightModifier;
+
+        playerManager.AdjustModifier(modifierToApply);
 
         var targetNode = deck.DeckNodeDatas.First(x => x.Guid == linkedNode.TargetNodeGuid);
         _currentNode = targetNode;

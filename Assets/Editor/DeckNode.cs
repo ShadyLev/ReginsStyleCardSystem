@@ -11,5 +11,7 @@ public class DeckNode : Node
     public string DialogueText;
     public string LeftAnswer;
     public string RightAnswer;
+    public ModifierData leftModifier;
+    public ModifierData rightModifier;
     public bool EntryPoint = false;
 }

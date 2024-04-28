@@ -85,6 +85,7 @@ public class GraphSaveUtility
 
         foreach(var deckNode in Nodes.Where(node => node.EntryPoint == false))
         {
+            Debug.Log("Saving money" + deckNode.leftModifier.MoneyModifier + " " + deckNode.rightModifier.MoneyModifier);
             deckContainer.DeckNodeDatas.Add(new DeckNodeData
             {
                 Guid = deckNode.GUID,
@@ -92,6 +93,8 @@ public class GraphSaveUtility
                 Position = deckNode.GetPosition().position,
                 LeftAnswer = deckNode.LeftAnswer,
                 RightAnswer = deckNode.RightAnswer,
+                leftModifier = deckNode.leftModifier,
+                rightModifier = deckNode.rightModifier,
                 characterSO = deckNode.CharacterData,
             });
         }
@@ -153,7 +156,9 @@ public class GraphSaveUtility
     {
         foreach(var nodeData in _containerCache.DeckNodeDatas)
         {
-            var tempNode = _targetGraphView.CreateDeckNode(nodeData.Position, nodeData.characterSO, nodeData.DialogueText, nodeData.LeftAnswer, nodeData.RightAnswer);
+            var tempNode = _targetGraphView.CreateDeckNode(nodeData.Position, nodeData.characterSO,
+             nodeData.DialogueText, nodeData.LeftAnswer, nodeData.RightAnswer,
+             nodeData.leftModifier, nodeData.rightModifier);
             tempNode.GUID = nodeData.Guid;
 
             _targetGraphView.AddElement(tempNode);

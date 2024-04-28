@@ -78,12 +78,17 @@ public class DeckGraphView : GraphView
         return node;
     }
 
-    public void CreateNode(Vector2 nodePosition, CharacterSO characterData = default, string dialogueText = "Dialogue Text", string leftAnswer = "Left Answer", string rightAnswer = "Right Answer")
+    public void CreateNode(Vector2 nodePosition,
+        CharacterSO characterData = default, string dialogueText = "Dialogue Text", 
+        string leftAnswer = "Left Answer", string rightAnswer = "Right Answer",
+        ModifierData leftModifier = default, ModifierData rightModifier = default)
     {
-        AddElement(CreateDeckNode(nodePosition, characterData, dialogueText, leftAnswer, rightAnswer));
+        AddElement(CreateDeckNode(nodePosition, characterData, dialogueText, leftAnswer, rightAnswer, leftModifier, rightModifier));
     }
 
-    public DeckNode CreateDeckNode(Vector2 nodePosition, CharacterSO characterData, string dialogueText, string leftAnswer, string rightAnswer)
+    public DeckNode CreateDeckNode(Vector2 nodePosition, CharacterSO characterData,
+     string dialogueText, string leftAnswer, string rightAnswer,
+     ModifierData leftModifier, ModifierData rightModifier)
     {
         var node = new DeckNode()
         {
@@ -92,7 +97,9 @@ public class DeckGraphView : GraphView
             DialogueText = dialogueText,
             CharacterData = characterData,
             LeftAnswer = leftAnswer,
-            RightAnswer = rightAnswer
+            RightAnswer = rightAnswer,
+            leftModifier = leftModifier,
+            rightModifier = rightModifier
         };
 
         //node.style.flexDirection = FlexDirection.ColumnReverse;
@@ -186,15 +193,15 @@ public class DeckGraphView : GraphView
         node.topContainer.Add(Header("Modifiers"));
         node.topContainer.Add(Divider(5));
 
-        AddModifier(node, "Money");
-        AddModifier(node, "Fame");
-        AddModifier(node, "Crew");
-        AddModifier(node, "Ship");
+        AddModifier(node, ModifiersEnum.Money);
+        AddModifier(node, ModifiersEnum.Fame);
+        AddModifier(node, ModifiersEnum.Crew);
+        AddModifier(node, ModifiersEnum.Ship);
 
         node.topContainer.Add(Divider(15));
     }
 
-    private void AddModifier(DeckNode node, string name)
+    private void AddModifier(DeckNode node, ModifiersEnum modifier)
     {
         const int MAX_CHAR = 5;
         const int WIDTH = 40;
@@ -204,21 +211,24 @@ public class DeckGraphView : GraphView
         var bgColor = new StyleColor();
         bgColor.value = new Color(0.31f, 0.31f, 0.31f);
         element.style.backgroundColor = bgColor;
-        element.styleSheets.Add(Resources.Load<StyleSheet>("DeckNode"));
+        element.styleSheets.Add(Resources.Load<StyleSheet>("TextStyle"));
 
         // field = name = field
-        var leftModifierField = new TextField(string.Empty);
+        var leftModifierField = new IntegerField(string.Empty);
         leftModifierField.RegisterValueChangedCallback(evt => 
         {
-            node.LeftAnswer = evt.newValue;
+            SetNodeModifier(node, modifier, true, evt.newValue);
         });
-        leftModifierField.SetValueWithoutNotify("0");
+        leftModifierField.styleSheets.Add(Resources.Load<StyleSheet>("TextStyle"));
+        leftModifierField.SetValueWithoutNotify(GetNodeModifier(node, modifier, true));
         leftModifierField.maxLength = MAX_CHAR;
         leftModifierField.style.width = WIDTH;
+        leftModifierField.AddToClassList("center-aligned-text");
+
         element.Add(leftModifierField);
         node.RefreshExpandedState();
 
-        var text = new Label(name);
+        var text = new Label(modifier.ToString());
         text.style.unityFontStyleAndWeight = FontStyle.Bold;
         text.style.alignSelf = Align.Center;
         text.style.unityTextAlign = TextAnchor.MiddleCenter;
@@ -226,16 +236,19 @@ public class DeckGraphView : GraphView
         element.Add(text);
         node.RefreshExpandedState();
 
-        var rightModifierField = new TextField(string.Empty);
-        rightModifierField.AddToClassList("right-aligned-text");
+        var rightModifierField = new IntegerField(string.Empty);
+        rightModifierField.styleSheets.Add(Resources.Load<StyleSheet>("TextStyle"));
         rightModifierField.RegisterValueChangedCallback(evt => 
         {
-            node.LeftAnswer = evt.newValue;
+            SetNodeModifier(node, modifier, false, evt.newValue);
         });
-        rightModifierField.SetValueWithoutNotify("0");
+        rightModifierField.SetValueWithoutNotify(GetNodeModifier(node, modifier, false));
         rightModifierField.style.alignSelf = Align.FlexEnd;
         rightModifierField.maxLength = MAX_CHAR;
         rightModifierField.style.width = WIDTH;
+    
+        rightModifierField.AddToClassList("center-aligned-text");
+
         element.Add(rightModifierField);
         node.RefreshExpandedState();
 
@@ -310,5 +323,67 @@ public class DeckGraphView : GraphView
         label.style.unityFontStyleAndWeight = FontStyle.Bold;
         label.style.alignSelf = Align.Center;
         return label;
+    }
+
+    void SetNodeModifier(DeckNode node, ModifiersEnum modifier, bool leftChoice, int newValue)
+    {
+        switch (modifier)
+        {
+            case ModifiersEnum.Money:
+                if(leftChoice)
+                    node.leftModifier.MoneyModifier = newValue;
+                else
+                    node.rightModifier.MoneyModifier = newValue;
+
+                Debug.Log("SET MONEY TO: " + node.leftModifier.MoneyModifier);
+                break;
+            case ModifiersEnum.Fame:
+                if(leftChoice)
+                    node.leftModifier.FameModifier = newValue;
+                else
+                    node.rightModifier.FameModifier = newValue;            
+                break;
+            case ModifiersEnum.Crew:
+                if(leftChoice)
+                    node.leftModifier.CrewModifier = newValue;
+                else
+                    node.rightModifier.CrewModifier = newValue;            
+                break;
+            case ModifiersEnum.Ship:
+                if(leftChoice)
+                    node.leftModifier.ShipModifier = newValue;
+                else
+                    node.rightModifier.ShipModifier = newValue;            
+                break;
+        }
+    }
+
+    int GetNodeModifier(DeckNode node, ModifiersEnum modifier, bool leftChoice)
+    {
+        switch (modifier)
+        {
+            case ModifiersEnum.Money:
+                if(leftChoice)
+                    return node.leftModifier.MoneyModifier;
+                else
+                    return node.rightModifier.MoneyModifier;
+            case ModifiersEnum.Fame:
+                if(leftChoice)
+                    return node.leftModifier.FameModifier;
+                else
+                    return node.rightModifier.FameModifier;            
+            case ModifiersEnum.Crew:
+                if(leftChoice)
+                    return node.leftModifier.CrewModifier;
+                else
+                    return node.rightModifier.CrewModifier;            
+            case ModifiersEnum.Ship:
+                if(leftChoice)
+                    return node.leftModifier.ShipModifier;
+                else
+                    return node.rightModifier.ShipModifier;  
+            default:
+                return 0;          
+        }
     }
 }

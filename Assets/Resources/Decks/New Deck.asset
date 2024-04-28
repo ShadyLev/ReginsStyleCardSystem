@@ -13,31 +13,63 @@ MonoBehaviour:
   m_Name: New Deck
   m_EditorClassIdentifier: 
   NodeLinks:
-  - BaseNodeGuid: 25017380-dd41-4589-a54f-4835311f2a18
+  - BaseNodeGuid: f1ec97d8-5231-4e0b-b1c1-9606c1ad547b
     PortName: Output
-    TargetNodeGuid: 445bbb95-eeb1-4376-8585-210262c9bc5e
-  - BaseNodeGuid: 445bbb95-eeb1-4376-8585-210262c9bc5e
+    TargetNodeGuid: 2481e6fb-9455-4c6a-94b2-6d62c6e56d7e
+  - BaseNodeGuid: 2481e6fb-9455-4c6a-94b2-6d62c6e56d7e
     PortName: Left
-    TargetNodeGuid: c122b744-8f38-4310-840e-0f59a9cb9342
-  - BaseNodeGuid: 445bbb95-eeb1-4376-8585-210262c9bc5e
+    TargetNodeGuid: 5ce947db-93a3-42d0-a101-47c50a70986b
+  - BaseNodeGuid: 2481e6fb-9455-4c6a-94b2-6d62c6e56d7e
     PortName: Right
-    TargetNodeGuid: 915a0494-7a05-46c9-acab-b2f8225aecc9
+    TargetNodeGuid: e7f2b3ab-5176-4f6a-8f98-be4c95db2126
   DeckNodeDatas:
-  - Guid: 445bbb95-eeb1-4376-8585-210262c9bc5e
-    characterSO: {fileID: 11400000, guid: 8a0949db2eede3c42a66b11f3861421e, type: 2}
-    DialogueText: Dialogue Text
-    LeftAnswer: Left Answer
-    RightAnswer: Right Answer
-    Position: {x: 52, y: 277}
-  - Guid: c122b744-8f38-4310-840e-0f59a9cb9342
-    characterSO: {fileID: 11400000, guid: 8a0949db2eede3c42a66b11f3861421e, type: 2}
-    DialogueText: You chose left
-    LeftAnswer: 1
-    RightAnswer: 2
-    Position: {x: -109, y: 577}
-  - Guid: 915a0494-7a05-46c9-acab-b2f8225aecc9
-    characterSO: {fileID: 11400000, guid: 8a0949db2eede3c42a66b11f3861421e, type: 2}
-    DialogueText: You chose right
-    LeftAnswer: 3
-    RightAnswer: 4
-    Position: {x: 176, y: 577}
+  - Guid: 2481e6fb-9455-4c6a-94b2-6d62c6e56d7e
+    characterSO: {fileID: 11400000, guid: cced6759f1e38cb4088223bbea48cca8, type: 2}
+    DialogueText: 'Hello this is a ademo,
+
+      which way do you want to go?'
+    LeftAnswer: Go left
+    RightAnswer: Go right
+    leftModifier:
+      MoneyModifier: -40
+      FameModifier: 2
+      CrewModifier: 3
+      ShipModifier: 4
+    rightModifier:
+      MoneyModifier: -30
+      FameModifier: 6
+      CrewModifier: 7
+      ShipModifier: 8
+    Position: {x: 44, y: 324}
+  - Guid: 5ce947db-93a3-42d0-a101-47c50a70986b
+    characterSO: {fileID: 11400000, guid: e81a10a3e18765b42947dd9f1dbbe765, type: 2}
+    DialogueText: You went left!
+    LeftAnswer: End left?
+    RightAnswer: Or end right?
+    leftModifier:
+      MoneyModifier: -1
+      FameModifier: -2
+      CrewModifier: -3
+      ShipModifier: -4
+    rightModifier:
+      MoneyModifier: -5
+      FameModifier: -6
+      CrewModifier: -7
+      ShipModifier: -8
+    Position: {x: -205, y: 783}
+  - Guid: e7f2b3ab-5176-4f6a-8f98-be4c95db2126
+    characterSO: {fileID: 11400000, guid: ee1f29f7aab6cfa469db3b4aeaf52bbb, type: 2}
+    DialogueText: You went right
+    LeftAnswer: HAHA end left
+    RightAnswer: lmao end right
+    leftModifier:
+      MoneyModifier: 12
+      FameModifier: 213
+      CrewModifier: 23
+      ShipModifier: 44
+    rightModifier:
+      MoneyModifier: 2222
+      FameModifier: -33
+      CrewModifier: 69
+      ShipModifier: 4
+    Position: {x: 224, y: 792}
