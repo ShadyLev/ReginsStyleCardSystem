@@ -1,4 +1,8 @@
 DeckNode #title 
 {
-    background-color: rgb(0,128,0);
+    background-color: rgb(92, 103, 175);
+}
+
+.right-aligned-text {
+    text-align: right;
 }

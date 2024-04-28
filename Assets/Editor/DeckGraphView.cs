@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using NUnit.Framework.Internal;
 using UnityEditor;
 using UnityEditor.Experimental.GraphView;
 using UnityEditor.UIElements;
@@ -103,9 +104,15 @@ public class DeckGraphView : GraphView
         inputPort.portName = "Input";
         node.titleContainer.Add(inputPort);
 
+        var bgColor = new StyleColor();
+        bgColor.value = new Color(0.188f, 0.188f, 0.18f);
+        node.topContainer.style.backgroundColor = bgColor;
+
         AddCharacterDetails(node);
 
         AddDialogText(node);
+
+        AddModifiers(node);
 
         AddAnswerFields(node);
 
@@ -124,14 +131,15 @@ public class DeckGraphView : GraphView
         var leftOutputNode = GeneratePort(deckNode, Direction.Output);
         leftOutputNode.portName = "Left";
         leftOutputNode.style.position = Position.Absolute;
-        leftOutputNode.style.left = 0f;
+        leftOutputNode.style.left = 0;
+        leftOutputNode.style.width = StyleKeyword.Auto;
         deckNode.outputContainer.Add(leftOutputNode);
         deckNode.RefreshExpandedState();
 
         var rightOutputNode = GeneratePort(deckNode, Direction.Output);
         rightOutputNode.portName = "Right";
-        //leftOutputNode.style.position = Position.Absolute;
-        //leftOutputNode.style.left = deckNode.style.width.value;
+        rightOutputNode.style.right = 0;
+        rightOutputNode.style.width = StyleKeyword.Auto;
         deckNode.outputContainer.Add(rightOutputNode);
 
         deckNode.RefreshExpandedState();
@@ -145,13 +153,19 @@ public class DeckGraphView : GraphView
 
     private void AddAnswerFields(DeckNode node)
     {
+        node.topContainer.Add(Header("Anwsers"));
+
+        var customElement = new VisualElement();
+        customElement.style.flexDirection = FlexDirection.Row;
+
         var leftAnswerTextField = new TextField(string.Empty);
         leftAnswerTextField.RegisterValueChangedCallback(evt => 
         {
             node.LeftAnswer = evt.newValue;
         });
         leftAnswerTextField.SetValueWithoutNotify(node.LeftAnswer);
-        node.topContainer.Add(leftAnswerTextField);
+        leftAnswerTextField.style.flexGrow = 1;
+        customElement.Add(leftAnswerTextField);
         node.RefreshExpandedState();
 
         var rightAnswerTextField = new TextField(string.Empty);
@@ -160,30 +174,102 @@ public class DeckGraphView : GraphView
             node.RightAnswer = evt.newValue;
         });
         rightAnswerTextField.SetValueWithoutNotify(node.RightAnswer);
+        rightAnswerTextField.style.flexGrow = 1;
+        customElement.Add(rightAnswerTextField); 
 
-        node.topContainer.Add(rightAnswerTextField);
+        node.topContainer.Add(customElement);
         node.RefreshExpandedState();
+    }
+
+    private void AddModifiers(DeckNode node)
+    {
+        node.topContainer.Add(Header("Modifiers"));
+        node.topContainer.Add(Divider(5));
+
+        AddModifier(node, "Money");
+        AddModifier(node, "Fame");
+        AddModifier(node, "Crew");
+        AddModifier(node, "Ship");
+
+        node.topContainer.Add(Divider(15));
+    }
+
+    private void AddModifier(DeckNode node, string name)
+    {
+        const int MAX_CHAR = 5;
+        const int WIDTH = 40;
+
+        var element = new VisualElement();
+        element.style.flexDirection = FlexDirection.Row;
+        var bgColor = new StyleColor();
+        bgColor.value = new Color(0.31f, 0.31f, 0.31f);
+        element.style.backgroundColor = bgColor;
+        element.styleSheets.Add(Resources.Load<StyleSheet>("DeckNode"));
+
+        // field = name = field
+        var leftModifierField = new TextField(string.Empty);
+        leftModifierField.RegisterValueChangedCallback(evt => 
+        {
+            node.LeftAnswer = evt.newValue;
+        });
+        leftModifierField.SetValueWithoutNotify("0");
+        leftModifierField.maxLength = MAX_CHAR;
+        leftModifierField.style.width = WIDTH;
+        element.Add(leftModifierField);
+        node.RefreshExpandedState();
+
+        var text = new Label(name);
+        text.style.unityFontStyleAndWeight = FontStyle.Bold;
+        text.style.alignSelf = Align.Center;
+        text.style.unityTextAlign = TextAnchor.MiddleCenter;
+        text.style.flexGrow = 1;
+        element.Add(text);
+        node.RefreshExpandedState();
+
+        var rightModifierField = new TextField(string.Empty);
+        rightModifierField.AddToClassList("right-aligned-text");
+        rightModifierField.RegisterValueChangedCallback(evt => 
+        {
+            node.LeftAnswer = evt.newValue;
+        });
+        rightModifierField.SetValueWithoutNotify("0");
+        rightModifierField.style.alignSelf = Align.FlexEnd;
+        rightModifierField.maxLength = MAX_CHAR;
+        rightModifierField.style.width = WIDTH;
+        element.Add(rightModifierField);
+        node.RefreshExpandedState();
+
+        node.topContainer.Add(element);
     }
 
     private void AddDialogText(DeckNode node)
     {
+        node.topContainer.Add(Header("Dialogue text"));
+
         var textField = new TextField(string.Empty);
         textField.RegisterValueChangedCallback(evt => 
         {
             node.DialogueText = evt.newValue;
         });
         textField.SetValueWithoutNotify(node.DialogueText);
+        textField.multiline = true;
 
         node.topContainer.Add(textField);
         node.RefreshExpandedState();
+
+        node.topContainer.Add(Divider(15));
     }
 
     private void AddCharacterDetails(DeckNode node)
     {
+        var element = new VisualElement();
+        element.style.backgroundColor = Color.grey;
+
         node.title = node.CharacterData?.characterName ?? "";
         var characterAvatar = new Image();
         characterAvatar.style.height = defaultAvatarImageSize.y;
         characterAvatar.style.width = defaultAvatarImageSize.x;
+        characterAvatar.style.alignSelf = Align.Center;
         //characterAvatar.StretchToParentSize();
 
         var soField = new ObjectField
@@ -201,9 +287,28 @@ public class DeckGraphView : GraphView
         });
         
         characterAvatar.image = node.CharacterData?.characterAvatar ?? null;
-
-        node.topContainer.Add(characterAvatar);
-        node.topContainer.Add(soField);
+        element.Add(characterAvatar);
+        element.Add(soField);
+        node.topContainer.Add(element);
         node.RefreshExpandedState();
+
+        node.topContainer.Add(Divider(15));
+        node.RefreshExpandedState();
+    }
+
+    // ALL THESE SHOULD BE IN A UTIL CLASS BUT I CBA HONESTLY
+    private VisualElement Divider(int height)
+    {
+        var divider = new VisualElement();
+        divider.style.height = height;
+        return divider;
+    }
+
+    private Label Header(string header)
+    {
+        var label = new Label(header);
+        label.style.unityFontStyleAndWeight = FontStyle.Bold;
+        label.style.alignSelf = Align.Center;
+        return label;
     }
 }
