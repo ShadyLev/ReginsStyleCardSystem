@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using System.Runtime.InteropServices;
 using Unity.VisualScripting;
 using UnityEditor;
@@ -84,7 +85,37 @@ public class DeckGraph : EditorWindow
 
         nodeCreateButton.text = "Create node";
         toolbar.Add(nodeCreateButton);
+
+        // NEw deck button
+        var newDeckButton = new Button(()=> 
+        {
+            CreateNewGraph();
+            objectField.value = null;
+            fileNameTextField.SetValueWithoutNotify("");
+        }){text = "New Deck"};
+        toolbar.Add(newDeckButton);
+
         rootVisualElement.Add(toolbar);
+    }
+
+    private void CreateNewGraph()
+    {
+        var nodes = _graphView.nodes.ToList().Cast<DeckNode>().ToList();
+        var edges = _graphView.edges.ToList();
+
+        // Set entry point guid from save. Discard existing guid.
+        foreach(var node in nodes)
+        {
+            if(node.EntryPoint)
+                continue;
+            
+            // Remove edges connected to this node
+            edges.Where(x => x.input.node == node).ToList().ForEach(edge => _graphView.RemoveElement(edge));
+
+            // Remove node
+            _graphView.RemoveElement(node);
+        }
+    
     }
 
     private void RequestDataOperation(bool save)

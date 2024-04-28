@@ -715,7 +715,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6ee03ea29be2fbf48ac8bd2177cc470d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  deck: {fileID: 11400000, guid: 62526a1775b6d2c4a95aa1dde5d73b48, type: 2}
+  deck: {fileID: 11400000, guid: 2c636739aa7be7144988e15525ec66c4, type: 2}
   _characterName: {fileID: 1253605683}
   _dialogueText: {fileID: 1229500421}
   _leftAnswerText: {fileID: 85111397}

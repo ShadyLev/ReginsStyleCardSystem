@@ -151,7 +151,6 @@ public class DeckGraphView : GraphView
             node.LeftAnswer = evt.newValue;
         });
         leftAnswerTextField.SetValueWithoutNotify(node.LeftAnswer);
-
         node.topContainer.Add(leftAnswerTextField);
         node.RefreshExpandedState();
 
@@ -195,7 +194,9 @@ public class DeckGraphView : GraphView
 
         soField.RegisterValueChangedCallback(evt =>
         {
+            var newSO = (CharacterSO)evt.newValue;
             node.CharacterData = (CharacterSO)evt.newValue;
+            node.title = newSO.characterName;
             characterAvatar.image = node.CharacterData.characterAvatar;
         });
         
