@@ -1,12 +1,12 @@
-using System.Collections;
-using System.Collections.Generic;
 using System.Linq;
+using CardSwipe;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
 public class DeckManager : MonoBehaviour
 {
+    public CardSwipeEffect _cardSwipeEffect;
     public PlayerManager playerManager;
     public DeckContainer deck;
     private int _deckNodeIndex;
@@ -21,9 +21,17 @@ public class DeckManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        _cardSwipeEffect = GetComponentInChildren<CardSwipeEffect>();
+        _cardSwipeEffect.CardSelectAction += CardSelected;
+
         _deckNodeIndex = 0;
         _currentNode = deck.DeckNodeDatas[0];
         SetNewCard(deck.DeckNodeDatas[0]);
+    }
+
+    private void CardSelected()
+    {
+        ChooseAnswer(_cardSwipeEffect.SwipedLeft);
     }
 
     // Update is called once per frame
