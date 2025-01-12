@@ -26,4 +26,5 @@ Each Deck is saved as a ScriptableObject under Resources/Decks
 To display how the deck data can be used in game I added coupld of scripts to manage the "gameplay" under Assets/Code.
 
 # Video Example:
+Click on the image to watch a quick demostration:
 [![Watch the video](https://img.youtube.com/vi/wYG7_ig88oE/0.jpg)](https://www.youtube.com/watch?v=wYG7_ig88oE)
