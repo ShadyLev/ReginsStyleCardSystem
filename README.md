@@ -11,7 +11,9 @@ Its structured like a behaviour tree, instead of going left to right like a Visu
 Each node has a unique guid assigned alongside references to a SO of a character, with fields to display which action it can split into.
 Players can go either left or right, with those actions having affect on some stats and the story.
 
-// Insert image here
+<p align="center">
+  <img src="./ReadMeContents/CardSystemPreview.png" alt="Graph Example" width="100%" />
+</p>
 
 # Project structure:
 ## Graphs
@@ -23,3 +25,5 @@ Each Deck is saved as a ScriptableObject under Resources/Decks
 ## Current UI and Game Code
 To display how the deck data can be used in game I added coupld of scripts to manage the "gameplay" under Assets/Code.
 
+# Video Example:
+[![Watch the video](https://img.youtube.com/vi/wYG7_ig88oE/0.jpg)](https://www.youtube.com/watch?v=wYG7_ig88oE)
